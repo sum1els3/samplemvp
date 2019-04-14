@@ -15,13 +15,8 @@ namespace SamplePersonCrud.Presenter
         //if not then the list from database is copied into form and loading it into the datagrid
         public static void ShowPersonListIntoDataGridView(DataGridView dataGridView, ref List<Person> peopleFromForm)
         {
-            List<Person> peopleFromDatabase = GetObjects.People();
-            if (peopleFromDatabase != peopleFromForm)
-            {
-                peopleFromForm = peopleFromDatabase;
-                LoadPeopleIntoDataGridView(dataGridView, peopleFromForm);
-            }
-            else { }
+            peopleFromForm = GetObjects.People();
+            LoadPeopleIntoDataGridView(dataGridView, peopleFromForm);
         }
 
         private static void LoadPeopleIntoDataGridView(DataGridView dataGridView, List<Person> people)

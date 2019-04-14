@@ -86,4 +86,31 @@ namespace SamplePersonCrud.Model.Objects
             };
         }
     }
+
+    class PersonComparer : IEqualityComparer<Person>
+    {
+        public bool Equals(Person x, Person y)
+        {
+            if (object.ReferenceEquals(x, y))
+            {
+                return true;
+            }
+            if(object.ReferenceEquals(x, null) || object.ReferenceEquals(y, null))
+            {
+                return false;
+            }
+            return x.ID == y.ID && x.FullName == y.FullName ? true : false;
+        }
+
+        public int GetHashCode(Person person)
+        {
+            if (object.ReferenceEquals(person, null))
+            {
+                return 0;
+            }
+            int hashID = person.ID.GetHashCode();
+            int hashFullName = string.IsNullOrEmpty(person.FullName) ? 0 : person.FullName.GetHashCode();
+            return hashID ^ hashFullName;
+        }
+    }
 }

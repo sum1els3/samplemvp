@@ -23,13 +23,12 @@ namespace SamplePersonCrud.View
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            MainFormController.ShowPersonListIntoDataGridView(dataGridView1, ref people);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             people = new List<Person>();
-            timer1.Start();
+            Refresh();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -44,6 +43,7 @@ namespace SamplePersonCrud.View
             {
                 person.Create();
                 MessageBox.Show("Inserted");
+                Refresh();
             }
             catch(Exception ex)
             {
@@ -59,6 +59,7 @@ namespace SamplePersonCrud.View
             person.MiddleName = textBox4.Text;
             person.Update();
             MessageBox.Show("Updated");
+            Refresh();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -66,6 +67,7 @@ namespace SamplePersonCrud.View
             Person person = people.Find(item => item.ID == int.Parse(textBox2.Text));
             person.Delete();
             MessageBox.Show("Deleted");
+            Refresh();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -76,6 +78,11 @@ namespace SamplePersonCrud.View
             textBox1.Text = person.LastName;
             textBox3.Text = person.FirstName;
             textBox4.Text = person.MiddleName;
+        }
+
+        private void Refresh()
+        {
+            MainFormController.ShowPersonListIntoDataGridView(dataGridView1, ref people);
         }
     }
 }
