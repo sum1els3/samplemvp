@@ -13,10 +13,10 @@ namespace SamplePersonCrud.Model.Objects.Person
     {
         public void Create()
         {
-                StoredProcedure storedProcedure = new StoredProcedure();
-                storedProcedure.StoredProcedureName = TPerson.Insert;
-                storedProcedure.Parameters.AddRange(GetParameters.FindAll(item => !item.ParameterName.Equals(TPerson.ID)));
-                storedProcedure.ExecuteNonQuery();
+            StoredProcedure storedProcedure = new StoredProcedure();
+            storedProcedure.StoredProcedureName = TPerson.Insert;
+            storedProcedure.Parameters.AddRange(GetParameters.FindAll(item => !item.ParameterName.Equals(TPerson.ID)));
+            storedProcedure.ExecuteNonQuery();
         }
 
         public void Delete()
