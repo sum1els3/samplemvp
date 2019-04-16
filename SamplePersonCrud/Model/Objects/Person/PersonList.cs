@@ -1,5 +1,4 @@
-﻿using SamplePersonCrud.Model.Database;
-using SamplePersonCrud.Model.DatabaseTables;
+﻿using SamplePersonCrud.Model.Database.DatabaseTables;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,27 +7,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SamplePersonCrud.Model.Objects
+namespace SamplePersonCrud.Model.Objects.Person
 {
-    static class GetObjects
+    class PersonList
     {
-        //Gets full list of people in the database
-        public static List<Person> People()
+        public List<Person> GetPeople()
         {
-            List<Person> people = new List<Person>();
-            using (SqlConnection con = DatabaseLocation.Connection)
+            List<Person> person = new List<Person>();
+            using (SqlConnection con = Database.DatabaseLocation.Database.Connection)
             {
-                using (SqlCommand command = new SqlCommand("SelectFromPersonTable", con))
+                using (SqlCommand command = new SqlCommand(TPerson.Select, con))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    con.Open();
                     SqlDataReader reader = command.ExecuteReader();
+                    con.Open();
                     while (reader.Read())
                     {
-                        people.Add
+                        person.Add
                         (
-                            new Person(int.Parse(reader[TPerson.ID].ToString()))
+                            new Person()
                             {
+                                ID = int.Parse(reader[TPerson.ID].ToString()),
                                 LastName = reader[TPerson.LastName].ToString(),
                                 FirstName = reader[TPerson.FirstName].ToString(),
                                 MiddleName = reader[TPerson.MiddleName].ToString()
@@ -38,7 +37,7 @@ namespace SamplePersonCrud.Model.Objects
                     con.Close();
                 }
             }
-            return people;
+            return person;
         }
     }
 }

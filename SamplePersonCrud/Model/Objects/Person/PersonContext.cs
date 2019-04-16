@@ -1,5 +1,5 @@
-﻿using SamplePersonCrud.Model.DatabaseServices;
-using SamplePersonCrud.Model.DatabaseTables;
+﻿using SamplePersonCrud.Model.Database.DatabaseServices;
+using SamplePersonCrud.Model.Database.DatabaseTables;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,27 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SamplePersonCrud.Model.Objects
+namespace SamplePersonCrud.Model.Objects.Person
 {
-    class Person : ICUD
+    class PersonContext : Person, ICUD
     {
-        public Person(int id = 0)
-        {
-            ID = id;
-        }
-
-        public int ID { get; private set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string FullName => string.Format("{0}, {1} {2}.", LastName, FirstName, MiddleName);
-
         public void Create()
         {
             if (ID == 0)
             {
                 StoredProcedure storedProcedure = new StoredProcedure();
-                storedProcedure.StoredProcedureName = ProcedureName.InsertStoredProcedureName(TPerson.TableName);
+                storedProcedure.StoredProcedureName = TPerson.Insert;
                 storedProcedure.Parameters.AddRange(GetParameters.FindAll(item => !item.ParameterName.Equals(TPerson.ID)));
                 storedProcedure.ExecuteNonQuery();
             }
@@ -40,7 +29,7 @@ namespace SamplePersonCrud.Model.Objects
         public void Delete()
         {
             StoredProcedure storedProcedure = new StoredProcedure();
-            storedProcedure.StoredProcedureName = ProcedureName.DeleteStoredProcedureName(TPerson.TableName);
+            storedProcedure.StoredProcedureName = TPerson.Delete;
             storedProcedure.Parameters.Add(GetParameters.Find(item => item.ParameterName.Equals(TPerson.ID)));
             storedProcedure.ExecuteNonQuery();
         }
@@ -48,7 +37,7 @@ namespace SamplePersonCrud.Model.Objects
         public void Update()
         {
             StoredProcedure storedProcedure = new StoredProcedure();
-            storedProcedure.StoredProcedureName = ProcedureName.UpdateStoredProcedureName(TPerson.TableName);
+            storedProcedure.StoredProcedureName = TPerson.Update;
             storedProcedure.Parameters.AddRange(GetParameters);
             storedProcedure.ExecuteNonQuery();
         }
@@ -84,33 +73,6 @@ namespace SamplePersonCrud.Model.Objects
                     ParameterValue = MiddleName
                 }
             };
-        }
-    }
-
-    class PersonComparer : IEqualityComparer<Person>
-    {
-        public bool Equals(Person x, Person y)
-        {
-            if (object.ReferenceEquals(x, y))
-            {
-                return true;
-            }
-            if(object.ReferenceEquals(x, null) || object.ReferenceEquals(y, null))
-            {
-                return false;
-            }
-            return x.ID == y.ID && x.FullName == y.FullName ? true : false;
-        }
-
-        public int GetHashCode(Person person)
-        {
-            if (object.ReferenceEquals(person, null))
-            {
-                return 0;
-            }
-            int hashID = person.ID.GetHashCode();
-            int hashFullName = string.IsNullOrEmpty(person.FullName) ? 0 : person.FullName.GetHashCode();
-            return hashID ^ hashFullName;
         }
     }
 }

@@ -1,13 +1,13 @@
-﻿using SamplePersonCrud.Model.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SamplePersonCrud.Model.Database.DatabaseLocation;
 
-namespace SamplePersonCrud.Model.DatabaseServices
+namespace SamplePersonCrud.Model.Database.DatabaseServices
 {
     class StoredProcedure
     {
@@ -26,7 +26,7 @@ namespace SamplePersonCrud.Model.DatabaseServices
 
         private void CreateNewConnectionAndExecuteNonQuery()
         {
-            using (SqlConnection con = DatabaseLocation.Connection)
+            using (SqlConnection con = DatabaseLocation.Database.Connection)
             {
                 using (SqlCommand command = new SqlCommand(StoredProcedureName, con))
                 {
@@ -58,13 +58,5 @@ namespace SamplePersonCrud.Model.DatabaseServices
         public string ParameterName { get; set; }
         public object ParameterValue { get; set; }
         public SqlDbType ParameterType { get; set; }
-    }
-
-    static class ProcedureName
-    {
-        //My stored procedure naming convention (optional)
-        public static string InsertStoredProcedureName(string tableName) => string.Format("InsertInto{0}Table", tableName);
-        public static string UpdateStoredProcedureName(string tableName) => string.Format("UpdateSet{0}Table", tableName);
-        public static string DeleteStoredProcedureName(string tableName) => string.Format("DeleteFrom{0}Table", tableName);
     }
 }

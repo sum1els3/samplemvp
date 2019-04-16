@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SamplePersonCrud.Model.Database
+namespace SamplePersonCrud.Model.Database.DatabaseLocation
 {
-    class DatabaseLocation
+    class Database
     {
         //Gets the value from App.config to avoid compiling when changing the data of the database
         public static string DatabaseIP => ConfigurationManager.AppSettings["databaseIP"].ToString();
