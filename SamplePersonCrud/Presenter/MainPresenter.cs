@@ -9,14 +9,16 @@ using System.Threading.Tasks;
 
 namespace SamplePersonCrud.Presenter
 {
-    class MainFormPresenter
+    class MainPresenter
     {
-        public MainFormPresenter(IPerson person)
+        public MainPresenter(IPerson person, IPersonList personList)
         {
             _person = person;
+            _personlist = personList;
         }
 
         IPerson _person;
+        IPersonList _personlist;
 
         public void Insert()
         {
@@ -52,6 +54,16 @@ namespace SamplePersonCrud.Presenter
                 MiddleName = _person.MiddleName
             };
             person.Delete();
+        }
+
+        public List<Person> GetPeople()
+        {
+            return _personlist.GetPeople();
+        }
+
+        public Person GetPersonByID(int i)
+        {
+            return _personlist.GetPersonByID(i);
         }
     }
 }

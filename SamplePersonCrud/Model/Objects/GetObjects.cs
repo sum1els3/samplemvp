@@ -1,4 +1,5 @@
-﻿using SamplePersonCrud.Model.Database.DatabaseTables;
+﻿using SamplePersonCrud.Model.Database;
+using SamplePersonCrud.Model.DatabaseTables;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,27 +8,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SamplePersonCrud.Model.Objects.Person
+namespace SamplePersonCrud.Model.Objects
 {
-    class PersonList : IPersonList
+    static class GetObjects
     {
-        public List<Person> GetPeople()
+        //Gets full list of people in the database
+        public static List<Person> People()
         {
-            List<Person> person = new List<Person>();
-            using (SqlConnection con = Database.DatabaseLocation.Database.Connection)
+            List<Person> people = new List<Person>();
+            using (SqlConnection con = DatabaseLocation.Connection)
             {
-                using (SqlCommand command = new SqlCommand(TPerson.Select, con))
+                using (SqlCommand command = new SqlCommand("SelectFromPersonTable", con))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     con.Open();
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        person.Add
+                        people.Add
                         (
-                            new Person()
+                            new Person(int.Parse(reader[TPerson.ID].ToString()))
                             {
-                                ID = int.Parse(reader[TPerson.ID].ToString()),
                                 LastName = reader[TPerson.LastName].ToString(),
                                 FirstName = reader[TPerson.FirstName].ToString(),
                                 MiddleName = reader[TPerson.MiddleName].ToString()
@@ -37,12 +38,7 @@ namespace SamplePersonCrud.Model.Objects.Person
                     con.Close();
                 }
             }
-            return person;
-        }
-
-        public Person GetPersonByID(int id)
-        {
-            return GetPeople().Find(item => item.ID == id);
+            return people;
         }
     }
 }

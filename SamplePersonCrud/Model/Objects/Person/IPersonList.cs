@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace SamplePersonCrud.Model.Objects.Person
 {
-    interface IPerson
+    interface IPersonList
     {
-        string ID { get; set; }
-        string LastName { get; set; }
-        string FirstName { get; set; }
-        string MiddleName { get; set; }
+        List<Person> GetPeople();
+        Person GetPersonByID(int id);
     }
 }

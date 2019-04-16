@@ -19,9 +19,9 @@ namespace SamplePersonCrud.Model.Database.DatabaseTables
         public static string MiddleName => "middleName";
 
         //Stored proceduress
-        public static string Select => ConfigurationManager.AppSettings[""].ToString();
-        public static string Insert => ConfigurationManager.AppSettings[""].ToString();
-        public static string Update => ConfigurationManager.AppSettings[""].ToString();
-        public static string Delete => ConfigurationManager.AppSettings[""].ToString();
+        public static string Select => ConfigurationManager.AppSettings["personSelect"].ToString();
+        public static string Insert => ConfigurationManager.AppSettings["personInsert"].ToString();
+        public static string Update => ConfigurationManager.AppSettings["personUpdate"].ToString();
+        public static string Delete => ConfigurationManager.AppSettings["personDelete"].ToString();
     }
 }

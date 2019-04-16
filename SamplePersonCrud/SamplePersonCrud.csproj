@@ -52,10 +52,11 @@
     <Compile Include="Model\Database\DatabaseLocation\Database.cs" />
     <Compile Include="Model\Objects\ICUD.cs" />
     <Compile Include="Model\Objects\Person\IPerson.cs" />
+    <Compile Include="Model\Objects\Person\IPersonList.cs" />
     <Compile Include="Model\Objects\Person\Person.cs" />
     <Compile Include="Model\Objects\Person\PersonContext.cs" />
     <Compile Include="Model\Objects\Person\PersonList.cs" />
-    <Compile Include="Presenter\MainFormPresenter.cs" />
+    <Compile Include="Presenter\MainPresenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Main.cs">
@@ -73,6 +74,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
