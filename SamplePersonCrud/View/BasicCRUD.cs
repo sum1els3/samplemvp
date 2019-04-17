@@ -13,15 +13,15 @@ using System.Windows.Forms;
 
 namespace SamplePersonCrud.View
 {
-    public partial class Main : Form, IPerson, IUser
+    public partial class BasicCRUD : Form, IPerson, IUser
     {
-        public Main()
+        public BasicCRUD()
         {
             InitializeComponent();
-            mainPresenter = new MainPresenter(this, this, new PersonList(), new UserList());
+            mainPresenter = new BasicCRUDPresenter(this, this, new PersonList(), new UserList());
         }
 
-        private MainPresenter mainPresenter { get; set; }
+        private BasicCRUDPresenter mainPresenter { get; set; }
 
         public int PersonID
         {

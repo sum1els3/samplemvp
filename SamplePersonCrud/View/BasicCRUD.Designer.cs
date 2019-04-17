@@ -1,6 +1,6 @@
 ﻿namespace SamplePersonCrud.View
 {
-    partial class Main
+    partial class BasicCRUD
     {
         /// <summary>
         /// Required designer variable.

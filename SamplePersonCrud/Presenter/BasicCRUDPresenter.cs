@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace SamplePersonCrud.Presenter
 {
-    class MainPresenter
+    class BasicCRUDPresenter
     {
-        public MainPresenter(IPerson person, IUser user, IPersonList personList, IUserList userList)
+        public BasicCRUDPresenter(IPerson person, IUser user, IPersonList personList, IUserList userList)
         {
             _person = person;
             _user = user;
