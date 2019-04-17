@@ -27,7 +27,7 @@ namespace SamplePersonCrud.Model.Objects.Person
                         (
                             new Person()
                             {
-                                ID = int.Parse(reader[TPerson.ID].ToString()),
+                                PersonID = int.Parse(reader[TPerson.PersonID].ToString()),
                                 LastName = reader[TPerson.LastName].ToString(),
                                 FirstName = reader[TPerson.FirstName].ToString(),
                                 MiddleName = reader[TPerson.MiddleName].ToString()
@@ -40,9 +40,6 @@ namespace SamplePersonCrud.Model.Objects.Person
             return person;
         }
 
-        public Person GetPersonByID(int id)
-        {
-            return GetPeople().Find(item => item.ID == id);
-        }
+        public Person GetPersonByID(int id) => GetPeople().Find(item => item.PersonID == id);
     }
 }

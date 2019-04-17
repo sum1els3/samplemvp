@@ -7,30 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SamplePersonCrud.Model.Objects.Person
+namespace SamplePersonCrud.Model.Objects.User
 {
-    class PersonContext : Person, ICUD
+    class UserContext : User, ICUD
     {
         public void Create()
         {
             StoredProcedure storedProcedure = new StoredProcedure();
-            storedProcedure.StoredProcedureName = TPerson.Insert;
-            storedProcedure.Parameters.AddRange(GetParameters.FindAll(item => !item.ParameterName.Equals(TPerson.PersonID)));
+            storedProcedure.StoredProcedureName = TUser.Insert;
+            storedProcedure.Parameters.AddRange(GetParameters.FindAll(item => !item.ParameterName.Equals(TUser.UserID)));
             storedProcedure.ExecuteNonQuery();
         }
 
         public void Delete()
         {
             StoredProcedure storedProcedure = new StoredProcedure();
-            storedProcedure.StoredProcedureName = TPerson.Delete;
-            storedProcedure.Parameters.Add(GetParameters.Find(item => item.ParameterName.Equals(TPerson.PersonID)));
+            storedProcedure.StoredProcedureName = TUser.Delete;
+            storedProcedure.Parameters.Add(GetParameters.Find(item => item.ParameterName.Equals(TUser.UserID)));
             storedProcedure.ExecuteNonQuery();
         }
 
         public void Update()
         {
             StoredProcedure storedProcedure = new StoredProcedure();
-            storedProcedure.StoredProcedureName = TPerson.Update;
+            storedProcedure.StoredProcedureName = TUser.Update;
             storedProcedure.Parameters.AddRange(GetParameters);
             storedProcedure.ExecuteNonQuery();
         }
@@ -39,31 +39,23 @@ namespace SamplePersonCrud.Model.Objects.Person
         {
             get => new List<Parameter>()
             {
-                //Can be in any order
                 new Parameter()
                 {
-                    //Gets the column name as the parameter name
-                    ParameterName = TPerson.PersonID,
+                    ParameterName = TUser.UserID,
                     ParameterType = SqlDbType.Int,
-                    ParameterValue = PersonID
+                    ParameterValue = UserID
                 },
                 new Parameter()
                 {
-                    ParameterName = TPerson.LastName,
+                    ParameterName = TUser.Username,
                     ParameterType = SqlDbType.VarChar,
-                    ParameterValue = LastName
+                    ParameterValue = Username
                 },
                 new Parameter()
                 {
-                    ParameterName = TPerson.FirstName,
+                    ParameterName = TUser.Password,
                     ParameterType = SqlDbType.VarChar,
-                    ParameterValue = FirstName
-                },
-                new Parameter()
-                {
-                    ParameterName = TPerson.MiddleName,
-                    ParameterType = SqlDbType.VarChar,
-                    ParameterValue = MiddleName
+                    ParameterValue = Password
                 }
             };
         }

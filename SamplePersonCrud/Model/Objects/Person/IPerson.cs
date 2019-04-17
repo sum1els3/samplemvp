@@ -8,7 +8,7 @@ namespace SamplePersonCrud.Model.Objects.Person
 {
     interface IPerson
     {
-        string ID { get; set; }
+        int PersonID { get; set; }
         string LastName { get; set; }
         string FirstName { get; set; }
         string MiddleName { get; set; }

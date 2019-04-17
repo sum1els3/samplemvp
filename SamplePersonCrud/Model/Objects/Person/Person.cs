@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SamplePersonCrud.Model.Objects.Person
 {
-    class Person
+    class Person : IPerson
     {
-        public int ID { get; set; }
+        public int PersonID { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }

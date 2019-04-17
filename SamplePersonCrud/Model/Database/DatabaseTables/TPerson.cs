@@ -13,7 +13,7 @@ namespace SamplePersonCrud.Model.Database.DatabaseTables
         public static string TableName => "person";
 
         //Table columns
-        public static string ID => "personID";
+        public static string PersonID => "personID";
         public static string LastName => "lastName";
         public static string FirstName => "firstName";
         public static string MiddleName => "middleName";

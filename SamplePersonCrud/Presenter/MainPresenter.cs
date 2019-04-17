@@ -1,5 +1,6 @@
 ﻿using SamplePersonCrud.Model.Objects;
 using SamplePersonCrud.Model.Objects.Person;
+using SamplePersonCrud.Model.Objects.User;
 using SamplePersonCrud.View;
 using System;
 using System.Collections.Generic;
@@ -11,59 +12,82 @@ namespace SamplePersonCrud.Presenter
 {
     class MainPresenter
     {
-        public MainPresenter(IPerson person, IPersonList personList)
+        public MainPresenter(IPerson person, IUser user, IPersonList personList, IUserList userList)
         {
             _person = person;
+            _user = user;
             _personlist = personList;
+            _userList = userList;
         }
 
         IPerson _person;
+        IUser _user;
         IPersonList _personlist;
+        IUserList _userList;
 
-        public void Insert()
+        public void CreatePerson()
         {
-            PersonContext person = new PersonContext()
-            {
-                ID = int.Parse(_person.ID.ToString()),
-                LastName = _person.LastName,
-                FirstName = _person.FirstName,
-                MiddleName = _person.MiddleName
-            };
+            PersonContext person = NewPersonContext;
             person.Create();
         }
 
-        public void Update()
+        public void UpdatePerson()
         {
-            PersonContext person = new PersonContext()
-            {
-                ID = int.Parse(_person.ID.ToString()),
-                LastName = _person.LastName,
-                FirstName = _person.FirstName,
-                MiddleName = _person.MiddleName
-            };
+            PersonContext person = NewPersonContext;
             person.Update();
         }
 
-        public void Delete()
+        public void DeletePerson()
         {
-            PersonContext person = new PersonContext()
+            PersonContext person = NewPersonContext;
+            person.Delete();
+        }
+
+        private PersonContext NewPersonContext
+        {
+            get => new PersonContext()
             {
-                ID = int.Parse(_person.ID.ToString()),
+                PersonID = _person.PersonID,
                 LastName = _person.LastName,
                 FirstName = _person.FirstName,
                 MiddleName = _person.MiddleName
             };
-            person.Delete();
         }
 
-        public List<Person> GetPeople()
+        public List<Person> GetPeople() =>_personlist.GetPeople();
+
+        public Person GetPersonByID(int i) => _personlist.GetPersonByID(i);
+
+        public void CreateUser()
         {
-            return _personlist.GetPeople();
+            UserContext user = NewUserContext;
+            user.Create();
         }
 
-        public Person GetPersonByID(int i)
+        public void UpdateUser()
         {
-            return _personlist.GetPersonByID(i);
+            UserContext user = NewUserContext;
+            user.Update();
         }
+
+        public void DeleteUser()
+        {
+            UserContext user = NewUserContext;
+            user.Delete();
+        }
+
+        private UserContext NewUserContext
+        {
+            get => new UserContext()
+            {
+                UserID = _user.UserID,
+                Username = _user.Username,
+                Password = _user.Password
+            };
+        }
+
+        public List<User> GetUsers() => _userList.GetUsers();
+
+        public User GetUserByID(int id) => _userList.GetUserByID(id);
     }
 }

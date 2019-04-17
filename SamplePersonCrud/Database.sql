@@ -35,3 +35,33 @@ create PROCEDURE DeleteFromPersonTable
 	@personID int
 AS delete from person where personID = @personID
 go
+
+create table users
+(
+	usersID int primary key identity(1,1),
+	username varchar(50),
+	password varchar(50)
+);
+go
+
+create procedure SelectFromUserTable
+as select * from users
+go
+
+create procedure InsertIntoUserTable
+	@username varchar(50),
+	@password varchar(50)
+as insert into users (username, password) values (@username, @password)
+go
+
+create procedure UpdateSetUserTable
+	@usersID int,
+	@username varchar(50),
+	@password varchar(50)
+as update users set username = @username, password = @password where usersID = @usersID
+go
+
+create procedure DeleteFromUserTable
+	@usersID int
+AS delete from users where usersID = @usersID
+go
