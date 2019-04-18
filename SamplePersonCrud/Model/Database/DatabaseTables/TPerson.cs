@@ -9,7 +9,7 @@ namespace SamplePersonCrud.Model.Database.DatabaseTables
 {
     class TPerson
     {
-        //Defines the person table from the database
+        //Defines the table from the database
         public static string TableName => "person";
 
         //Table columns

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace SamplePersonCrud.Model.Objects.Person
 {
-    interface IPerson
+    public interface IPerson
     {
         int PersonID { get; set; }
         string LastName { get; set; }
         string FirstName { get; set; }
         string MiddleName { get; set; }
+        string FullName { get; }
     }
 }

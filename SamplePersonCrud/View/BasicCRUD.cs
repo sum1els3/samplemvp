@@ -14,36 +14,16 @@ using System.Windows.Forms;
 
 namespace SamplePersonCrud.View
 {
-    public partial class BasicCRUD : Form, IPerson, IUser
+    public partial class BasicCRUD : Form, IUser
     {
         public BasicCRUD()
         {
             InitializeComponent();
-            mainPresenter = new BasicCRUDPresenter(this, this);
+            mainPresenter = new BasicCRUDPresenter(this);
         }
 
         private BasicCRUDPresenter mainPresenter { get; set; }
 
-        public int PersonID
-        {
-            get => string.IsNullOrEmpty(textBox2.Text) ? 0 : int.Parse(textBox2.Text);
-            set => textBox2.Text = value.ToString();
-        }
-        public string LastName
-        {
-            get => textBox1.Text;
-            set => textBox1.Text = value;
-        }
-        public string FirstName
-        {
-            get => textBox3.Text;
-            set => textBox3.Text = value;
-        }
-        public string MiddleName
-        {
-            get => textBox4.Text;
-            set => textBox4.Text = value;
-        }
         public int UserID
         {
             get => string.IsNullOrEmpty(textBox8.Text) ? 0 : int.Parse(textBox8.Text);
@@ -60,70 +40,49 @@ namespace SamplePersonCrud.View
             set => textBox7.Text = value;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public IPerson Person
         {
-            mainPresenter.CreatePerson();
-            RefreshDataGrids();
-            MessageBox.Show("Inserted");
+            get => new PersonContext()
+            {
+                PersonID = string.IsNullOrEmpty(textBox2.Text) ? 0 : int.Parse(textBox2.Text),
+                LastName = textBox1.Text,
+                FirstName = textBox3.Text,
+                MiddleName = textBox4.Text
+            };
+            set
+            {
+                textBox2.Text = value.PersonID.ToString();
+                textBox1.Text = value.LastName;
+                textBox3.Text = value.FirstName;
+                textBox4.Text = value.MiddleName;
+            }
         }
+
+        private void button1_Click(object sender, EventArgs e) { }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
         }
-
-        private void RefreshDataGrids()
-        {
-            RefreshDataGridPerson();
-            RefreshDataGridUser();
-        }
-
-        private void RefreshDataGridPerson()
-        {
-            List<IPerson> people = mainPresenter.GetPeople();
-            dataGridView1.Rows.Clear();
-            foreach (Person person in people)
-            {
-                dataGridView1.Rows.Add(person.PersonID, person.FullName);
-            }
-        }
-
         private void RefreshDataGridUser()
         {
             List<IUser> users = mainPresenter.GetUsers();
             dataGridView2.Rows.Clear();
             foreach (IUser user in users)
             {
-                dataGridView2.Rows.Add(user.UserID, user.Username, user.Password);
+                dataGridView2.Rows.Add(user.UserID, user.Username, user.Password, user.Person.PersonID, user.Person.FullName);
             }
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            RefreshDataGrids();
+            RefreshDataGridUser();
         }
 
-        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            IPerson person = mainPresenter.GetPersonByID(int.Parse(dataGridView1.CurrentRow.Cells["id"].EditedFormattedValue.ToString()));
-            PersonID = person.PersonID;
-            LastName = person.LastName;
-            FirstName = person.FirstName;
-            MiddleName = person.MiddleName;
-        }
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e) { }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            mainPresenter.UpdatePerson();
-            RefreshDataGrids();
-            MessageBox.Show("Updated");
-        }
+        private void button2_Click(object sender, EventArgs e) { }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            mainPresenter.DeletePerson();
-            RefreshDataGrids();
-            MessageBox.Show("Deleted");
-        }
+        private void button3_Click(object sender, EventArgs e) { }
 
         private void dataGridView2_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -131,26 +90,27 @@ namespace SamplePersonCrud.View
             UserID = user.UserID;
             Username = user.Username;
             Password = user.Password;
+            Person = user.Person;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             mainPresenter.CreateUser();
-            RefreshDataGrids();
+            RefreshDataGridUser();
             MessageBox.Show("Inserted");
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             mainPresenter.UpdateUser();
-            RefreshDataGrids();
+            RefreshDataGridUser();
             MessageBox.Show("Updated");
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             mainPresenter.DeleteUser();
-            RefreshDataGrids();
+            RefreshDataGridUser();
             MessageBox.Show("Deleted");
         }
 

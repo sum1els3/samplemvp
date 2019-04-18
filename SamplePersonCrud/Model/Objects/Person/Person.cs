@@ -11,6 +11,11 @@ namespace SamplePersonCrud.Model.Objects.Person
 {
     class Person : IPerson
     {
+        public Person()
+        {
+            PersonID = 0;
+        }
+
         public int PersonID { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }

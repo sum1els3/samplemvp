@@ -40,25 +40,29 @@ create table users
 (
 	usersID int primary key identity(1,1),
 	username varchar(50),
-	password varchar(50)
+	password varchar(50),
+	personID int,
+	foreign key (personID) references person(personID)
 );
 go
-
+	
 create procedure SelectFromUserTable
-as select * from users
+as select * from users join person on person.personID = users.personID
 go
 
 create procedure InsertIntoUserTable
 	@username varchar(50),
-	@password varchar(50)
-as insert into users (username, password) values (@username, @password)
+	@password varchar(50),
+	@personID int = null
+as insert into users (username, password, personID) values (@username, @password, @personID)
 go
 
 create procedure UpdateSetUserTable
 	@usersID int,
 	@username varchar(50),
-	@password varchar(50)
-as update users set username = @username, password = @password where usersID = @usersID
+	@password varchar(50),
+	@personID int
+as update users set username = @username, password = @password, personID = @personID where usersID = @usersID
 go
 
 create procedure DeleteFromUserTable

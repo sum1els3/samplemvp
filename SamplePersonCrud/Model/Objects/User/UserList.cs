@@ -1,5 +1,6 @@
 ﻿using SamplePersonCrud.Model.Database.DatabaseLocation;
 using SamplePersonCrud.Model.Database.DatabaseTables;
+using SamplePersonCrud.Model.Objects.Person;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,15 +28,21 @@ namespace SamplePersonCrud.Model.Objects.User
                     IDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        users.Add
-                        (
-                            new UserContext()
-                            {
-                                UserID = int.Parse(reader[TUser.UserID].ToString()),
-                                Username = reader[TUser.Username].ToString(),
-                                Password = reader[TUser.Password].ToString()
-                            }
-                        );
+                        IPerson person = new PersonContext()
+                        {
+                            PersonID = int.Parse(reader[TUser.PersonID].ToString()),
+                            LastName = reader[TPerson.LastName].ToString(),
+                            FirstName = reader[TPerson.FirstName].ToString(),
+                            MiddleName = reader[TPerson.MiddleName].ToString()
+                        };
+                        IUser user = new UserContext()
+                        {
+                            UserID = int.Parse(reader[TUser.UserID].ToString()),
+                            Username = reader[TUser.Username].ToString(),
+                            Password = reader[TUser.Password].ToString(),
+                            Person = person
+                        };
+                        users.Add(user);
                     }
                     con.Close();
                 }

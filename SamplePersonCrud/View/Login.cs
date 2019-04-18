@@ -1,4 +1,5 @@
-﻿using SamplePersonCrud.Model.Objects.User;
+﻿using SamplePersonCrud.Model.Objects.Person;
+using SamplePersonCrud.Model.Objects.User;
 using SamplePersonCrud.Presenter;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace SamplePersonCrud.View
             get => textBox2.Text;
             set => textBox2.Text = value;
         }
+        public IPerson Person { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         LoginPresenter loginPresenter;
 
@@ -59,13 +61,13 @@ namespace SamplePersonCrud.View
             {
                 MessageBox.Show("Invalid username or password.");
             }
-            
         }
 
         private string DisplayDetails(IUser user)
         {
             return string.Format("Username: {0} \n" +
-                "Password: {1}", user.Username, user.Password);
+                "Password: {1} \n" +
+                "Fullname: {2}", user.Username, user.Password, user.Person.FullName);
         }
     }
 }

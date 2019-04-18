@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SamplePersonCrud.Model.Objects.Person;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace SamplePersonCrud.Model.Objects.User
         int UserID { get; set; }
         string Username { get; set; }
         string Password { get; set; }
+
+        IPerson Person { get; set; }
     }
 }

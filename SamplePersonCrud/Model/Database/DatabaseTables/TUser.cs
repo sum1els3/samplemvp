@@ -9,13 +9,16 @@ namespace SamplePersonCrud.Model.Database.DatabaseTables
 {
     class TUser
     {
-        //Defines the person table from the database
+        //Defines the table from the database
         public static string TableName => "users";
 
         //Table columns
         public static string UserID => "usersID";
         public static string Username => "username";
         public static string Password => "password";
+
+        //Foreign keys
+        public static string PersonID => TPerson.PersonID;
 
         //Stored proceduress
         public static string Select => ConfigurationManager.AppSettings["userSelect"].ToString();

@@ -1,5 +1,6 @@
 ﻿using SamplePersonCrud.Model.Database.DatabaseServices;
 using SamplePersonCrud.Model.Database.DatabaseTables;
+using SamplePersonCrud.Model.Objects.Person;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,10 +14,37 @@ namespace SamplePersonCrud.Model.Objects.User
     {
         public void Create()
         {
+            CheckIfExist();
             StoredProcedure storedProcedure = new StoredProcedure();
             storedProcedure.StoredProcedureName = TUser.Insert;
             storedProcedure.Parameters.AddRange(GetParameters.FindAll(item => !item.ParameterName.Equals(TUser.UserID)));
             storedProcedure.ExecuteNonQuery();
+        }
+
+        private ICUD PersonCUD()
+        {
+            return new PersonContext()
+            {
+                PersonID = Person.PersonID,
+                LastName = Person.LastName,
+                FirstName = Person.FirstName,
+                MiddleName = Person.MiddleName
+            };
+        }
+
+        private void CheckIfExist()
+        {
+            if (Person.PersonID == 0)
+            {
+                PersonCUD().Create();
+                SetPersonID();
+            }
+        }
+
+        private void SetPersonID()
+        {
+            List<IPerson> personList = new PersonList().GetPeople();
+            Person.PersonID = personList.Find(item => item.LastName.Equals(Person.LastName) && item.FirstName.Equals(Person.FirstName) && item.MiddleName.Equals(Person.MiddleName)).PersonID;
         }
 
         public void Delete()
@@ -29,10 +57,17 @@ namespace SamplePersonCrud.Model.Objects.User
 
         public void Update()
         {
+            UpdatePerson();
             StoredProcedure storedProcedure = new StoredProcedure();
             storedProcedure.StoredProcedureName = TUser.Update;
             storedProcedure.Parameters.AddRange(GetParameters);
             storedProcedure.ExecuteNonQuery();
+        }
+
+        private void UpdatePerson()
+        {
+            CheckIfExist();
+            PersonCUD().Update();
         }
 
         private List<Parameter> GetParameters
@@ -56,6 +91,12 @@ namespace SamplePersonCrud.Model.Objects.User
                     ParameterName = TUser.Password,
                     ParameterType = SqlDbType.VarChar,
                     ParameterValue = Password
+                },
+                new Parameter()
+                {
+                    ParameterName = TUser.PersonID,
+                    ParameterType = SqlDbType.Int,
+                    ParameterValue = Person.PersonID
                 }
             };
         }

@@ -14,7 +14,7 @@ namespace SamplePersonCrud.Model.Objects.Person
     {
         public List<IPerson> GetPeople()
         {
-            List<IPerson> person = new List<IPerson>();
+            List<IPerson> people = new List<IPerson>();
             using (IDbConnection con = DatabaseConnection.Connection)
             {
                 using (IDbCommand command = DatabaseConnection.Command(TPerson.Select))
@@ -25,21 +25,19 @@ namespace SamplePersonCrud.Model.Objects.Person
                     IDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        person.Add
-                        (
-                            new PersonContext()
-                            {
-                                PersonID = int.Parse(reader[TPerson.PersonID].ToString()),
-                                LastName = reader[TPerson.LastName].ToString(),
-                                FirstName = reader[TPerson.FirstName].ToString(),
-                                MiddleName = reader[TPerson.MiddleName].ToString()
-                            }
-                        );
+                        IPerson person = new PersonContext()
+                        {
+                            PersonID = int.Parse(reader[TPerson.PersonID].ToString()),
+                            LastName = reader[TPerson.LastName].ToString(),
+                            FirstName = reader[TPerson.FirstName].ToString(),
+                            MiddleName = reader[TPerson.MiddleName].ToString()
+                        };
+                        people.Add(person);
                     }
                     con.Close();
                 }
             }
-            return person;
+            return people;
         }
 
         public IPerson GetPersonByID(int id) => GetPeople().Find(item => item.PersonID == id);
