@@ -26,10 +26,11 @@ namespace SamplePersonCrud.Model.Database.DatabaseServices
 
         private void CreateNewConnectionAndExecuteNonQuery()
         {
-            using (SqlConnection con = DatabaseLocation.Database.Connection)
+            using (IDbConnection con = DatabaseConnection.Connection)
             {
-                using (SqlCommand command = new SqlCommand(StoredProcedureName, con))
+                using (IDbCommand command = DatabaseConnection.Command(StoredProcedureName))
                 {
+                    command.Connection = con;
                     command.CommandType = CommandType.StoredProcedure;
                     AddParametersIntoStoredProcedure(command, Parameters);
                     ExecuteNonQuery(command);
@@ -37,15 +38,19 @@ namespace SamplePersonCrud.Model.Database.DatabaseServices
             }
         }
 
-        private static void AddParametersIntoStoredProcedure(SqlCommand command, List<Parameter> parameters)
+        private static void AddParametersIntoStoredProcedure(IDbCommand command, List<Parameter> parameters)
         {
             foreach (Parameter parameter in parameters)
             {
-                command.Parameters.Add(string.Format("@{0}", parameter.ParameterName), parameter.ParameterType).Value = parameter.ParameterValue;
+                IDataParameter param = DatabaseConnection.Parameter;
+                param.ParameterName = string.Format("@{0}", parameter.ParameterName);
+                param.DbType = (DbType)parameter.ParameterType;
+                param.Value = parameter.ParameterValue;
+                command.Parameters.Add(param);
             }
         }
 
-        private static void ExecuteNonQuery(SqlCommand command)
+        private static void ExecuteNonQuery(IDbCommand command)
         {
             command.Connection.Open();
             command.ExecuteNonQuery();

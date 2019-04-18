@@ -8,8 +8,8 @@ namespace SamplePersonCrud.Model.Objects.User
 {
     interface IUserList
     {
-        List<User> GetUsers();
-        User GetUserByID(int id);
-        User LogIn(string username, string password);
+        List<IUser> GetUsers();
+        IUser GetUserByID(int id);
+        IUser LogIn(string username, string password);
     }
 }

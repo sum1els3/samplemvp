@@ -1,4 +1,5 @@
-﻿using SamplePersonCrud.Model.Database.DatabaseTables;
+﻿using SamplePersonCrud.Model.Database.DatabaseLocation;
+using SamplePersonCrud.Model.Database.DatabaseTables;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,23 +12,24 @@ namespace SamplePersonCrud.Model.Objects.User
 {
     class UserList : IUserList
     {
-        public User GetUserByID(int id) => GetUsers().Find(item => item.UserID == id);
+        public IUser GetUserByID(int id) => GetUsers().Find(item => item.UserID == id);
 
-        public List<User> GetUsers()
+        public List<IUser> GetUsers()
         {
-            List<User> users = new List<User>();
-            using (SqlConnection con = Database.DatabaseLocation.Database.Connection)
+            List<IUser> users = new List<IUser>();
+            using (IDbConnection con = DatabaseConnection.Connection)
             {
-                using (SqlCommand command = new SqlCommand(TUser.Select, con))
+                using (IDbCommand command = DatabaseConnection.Command(TUser.Select))
                 {
+                    command.Connection = con;
                     command.CommandType = CommandType.StoredProcedure;
                     con.Open();
-                    SqlDataReader reader = command.ExecuteReader();
+                    IDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         users.Add
                         (
-                            new User()
+                            new UserContext()
                             {
                                 UserID = int.Parse(reader[TUser.UserID].ToString()),
                                 Username = reader[TUser.Username].ToString(),
@@ -41,6 +43,6 @@ namespace SamplePersonCrud.Model.Objects.User
             return users;
         }
 
-        public User LogIn(string username, string password) => GetUsers().Find(item => item.Username.Equals(username) && item.Password.Equals(password));
+        public IUser LogIn(string username, string password) => GetUsers().Find(item => item.Username.Equals(username) && item.Password.Equals(password));
     }
 }

@@ -12,12 +12,12 @@ namespace SamplePersonCrud.Presenter
 {
     class BasicCRUDPresenter
     {
-        public BasicCRUDPresenter(IPerson person, IUser user, IPersonList personList, IUserList userList)
+        public BasicCRUDPresenter(IPerson person, IUser user)
         {
             _person = person;
             _user = user;
-            _personlist = personList;
-            _userList = userList;
+            _personlist = new PersonList();
+            _userList = new UserList();
         }
 
         IPerson _person;
@@ -27,67 +27,55 @@ namespace SamplePersonCrud.Presenter
 
         public void CreatePerson()
         {
-            PersonContext person = NewPersonContext;
-            person.Create();
+            NewPersonContext.Create();
         }
 
         public void UpdatePerson()
         {
-            PersonContext person = NewPersonContext;
-            person.Update();
+            NewPersonContext.Update();
         }
 
         public void DeletePerson()
         {
-            PersonContext person = NewPersonContext;
-            person.Delete();
+            NewPersonContext.Delete();
         }
 
-        private PersonContext NewPersonContext
+        private PersonContext NewPersonContext => new PersonContext()
         {
-            get => new PersonContext()
-            {
-                PersonID = _person.PersonID,
-                LastName = _person.LastName,
-                FirstName = _person.FirstName,
-                MiddleName = _person.MiddleName
-            };
-        }
+            PersonID = _person.PersonID,
+            LastName = _person.LastName,
+            FirstName = _person.FirstName,
+            MiddleName = _person.MiddleName
+        };
 
-        public List<Person> GetPeople() =>_personlist.GetPeople();
+        public List<IPerson> GetPeople() =>_personlist.GetPeople();
 
-        public Person GetPersonByID(int i) => _personlist.GetPersonByID(i);
+        public IPerson GetPersonByID(int i) => _personlist.GetPersonByID(i);
 
         public void CreateUser()
         {
-            UserContext user = NewUserContext;
-            user.Create();
+            NewUserContext.Create();
         }
 
         public void UpdateUser()
         {
-            UserContext user = NewUserContext;
-            user.Update();
+            NewUserContext.Update();
         }
 
         public void DeleteUser()
         {
-            UserContext user = NewUserContext;
-            user.Delete();
+            NewUserContext.Delete();
         }
 
-        private UserContext NewUserContext
+        private UserContext NewUserContext => new UserContext()
         {
-            get => new UserContext()
-            {
-                UserID = _user.UserID,
-                Username = _user.Username,
-                Password = _user.Password
-            };
-        }
+            UserID = _user.UserID,
+            Username = _user.Username,
+            Password = _user.Password
+        };
 
-        public List<User> GetUsers() => _userList.GetUsers();
+        public List<IUser> GetUsers() => _userList.GetUsers();
 
-        public User GetUserByID(int id) => _userList.GetUserByID(id);
+        public IUser GetUserByID(int id) => _userList.GetUserByID(id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using SamplePersonCrud.Model.Database.DatabaseTables;
+﻿using SamplePersonCrud.Model.Database.DatabaseLocation;
+using SamplePersonCrud.Model.Database.DatabaseTables;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,21 +12,22 @@ namespace SamplePersonCrud.Model.Objects.Person
 {
     class PersonList : IPersonList
     {
-        public List<Person> GetPeople()
+        public List<IPerson> GetPeople()
         {
-            List<Person> person = new List<Person>();
-            using (SqlConnection con = Database.DatabaseLocation.Database.Connection)
+            List<IPerson> person = new List<IPerson>();
+            using (IDbConnection con = DatabaseConnection.Connection)
             {
-                using (SqlCommand command = new SqlCommand(TPerson.Select, con))
+                using (IDbCommand command = DatabaseConnection.Command(TPerson.Select))
                 {
+                    command.Connection = con;
                     command.CommandType = CommandType.StoredProcedure;
                     con.Open();
-                    SqlDataReader reader = command.ExecuteReader();
+                    IDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         person.Add
                         (
-                            new Person()
+                            new PersonContext()
                             {
                                 PersonID = int.Parse(reader[TPerson.PersonID].ToString()),
                                 LastName = reader[TPerson.LastName].ToString(),
@@ -40,6 +42,6 @@ namespace SamplePersonCrud.Model.Objects.Person
             return person;
         }
 
-        public Person GetPersonByID(int id) => GetPeople().Find(item => item.PersonID == id);
+        public IPerson GetPersonByID(int id) => GetPeople().Find(item => item.PersonID == id);
     }
 }
