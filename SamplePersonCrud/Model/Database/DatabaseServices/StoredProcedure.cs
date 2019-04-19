@@ -24,6 +24,11 @@ namespace SamplePersonCrud.Model.Database.DatabaseServices
             CreateNewConnectionAndExecuteNonQuery();
         }
 
+        public IDataReader ExecuteDataReader()
+        {
+            return CreateNewConnectionAndExecuteDataReader();
+        }
+
         private void CreateNewConnectionAndExecuteNonQuery()
         {
             using (IDbConnection con = DatabaseConnection.Connection)
@@ -35,6 +40,20 @@ namespace SamplePersonCrud.Model.Database.DatabaseServices
                     AddParametersIntoStoredProcedure(command, Parameters);
                     ExecuteNonQuery(command);
                 }
+            }
+        }
+
+        private IDataReader CreateNewConnectionAndExecuteDataReader()
+        {
+            IDbConnection con = DatabaseConnection.Connection;
+            using (IDbCommand command = DatabaseConnection.Command(StoredProcedureName))
+            {
+                command.Connection = con;
+                command.CommandType = CommandType.StoredProcedure;
+                AddParametersIntoStoredProcedure(command, Parameters);
+                con.Open();
+                IDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                return reader;
             }
         }
 

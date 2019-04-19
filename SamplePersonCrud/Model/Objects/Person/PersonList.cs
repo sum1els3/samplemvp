@@ -1,4 +1,5 @@
 ﻿using SamplePersonCrud.Model.Database.DatabaseLocation;
+using SamplePersonCrud.Model.Database.DatabaseServices;
 using SamplePersonCrud.Model.Database.DatabaseTables;
 using System;
 using System.Collections.Generic;
@@ -15,27 +16,24 @@ namespace SamplePersonCrud.Model.Objects.Person
         public List<IPerson> GetPeople()
         {
             List<IPerson> people = new List<IPerson>();
-            using (IDbConnection con = DatabaseConnection.Connection)
+            StoredProcedure storedProcedure = new StoredProcedure
             {
-                using (IDbCommand command = DatabaseConnection.Command(TPerson.Select))
+                StoredProcedureName = TPerson.Select
+            };
+            using (IDataReader reader = storedProcedure.ExecuteDataReader())
+            {
+                while (reader.Read())
                 {
-                    command.Connection = con;
-                    command.CommandType = CommandType.StoredProcedure;
-                    con.Open();
-                    IDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
+                    IPerson person = new PersonContext()
                     {
-                        IPerson person = new PersonContext()
-                        {
-                            PersonID = int.Parse(reader[TPerson.PersonID].ToString()),
-                            LastName = reader[TPerson.LastName].ToString(),
-                            FirstName = reader[TPerson.FirstName].ToString(),
-                            MiddleName = reader[TPerson.MiddleName].ToString()
-                        };
-                        people.Add(person);
-                    }
-                    con.Close();
+                        PersonID = int.Parse(reader[TPerson.PersonID].ToString()),
+                        LastName = reader[TPerson.LastName].ToString(),
+                        FirstName = reader[TPerson.FirstName].ToString(),
+                        MiddleName = reader[TPerson.MiddleName].ToString()
+                    };
+                    people.Add(person);
                 }
+                reader.Close();
             }
             return people;
         }
