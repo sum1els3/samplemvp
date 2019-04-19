@@ -28,14 +28,14 @@ namespace SamplePersonCrud.Model.Objects.User
                     IDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        IPerson person = new PersonContext()
+                        IPerson person = new Person.Person()
                         {
                             PersonID = int.Parse(reader[TUser.PersonID].ToString()),
                             LastName = reader[TPerson.LastName].ToString(),
                             FirstName = reader[TPerson.FirstName].ToString(),
                             MiddleName = reader[TPerson.MiddleName].ToString()
                         };
-                        IUser user = new UserContext()
+                        IUser user = new User()
                         {
                             UserID = int.Parse(reader[TUser.UserID].ToString()),
                             Username = reader[TUser.Username].ToString(),

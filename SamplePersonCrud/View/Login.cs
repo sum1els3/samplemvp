@@ -30,6 +30,7 @@ namespace SamplePersonCrud.View
         public IPerson Person { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         LoginPresenter loginPresenter;
+        IUser _sendUser;
 
         public Login()
         {
@@ -45,17 +46,16 @@ namespace SamplePersonCrud.View
             thread.Start();
         }
 
-        public void OpenBasicCrude()
-        {
-            Application.Run(new BasicCRUD());
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
                 IUser user = loginPresenter.Login();
-                MessageBox.Show(DisplayDetails(user));
+                _sendUser = user != null ? user : throw new NullReferenceException();
+                this.Close();
+                Thread thread = new Thread(OpenShowUser);
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
             }
             catch (NullReferenceException)
             {
@@ -63,11 +63,14 @@ namespace SamplePersonCrud.View
             }
         }
 
-        private string DisplayDetails(IUser user)
+        public void OpenBasicCrude()
         {
-            return string.Format("Username: {0} \n" +
-                "Password: {1} \n" +
-                "Fullname: {2}", user.Username, user.Password, user.Person.FullName);
+            Application.Run(new BasicCRUD());
+        }
+
+        public void OpenShowUser()
+        {
+            Application.Run(new ShowUser(_sendUser));
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SamplePersonCrud.Model.Objects.User
 {
-    interface IUser
+    public interface IUser
     {
         int UserID { get; set; }
         string Username { get; set; }

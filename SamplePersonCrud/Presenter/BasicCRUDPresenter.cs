@@ -23,20 +23,20 @@ namespace SamplePersonCrud.Presenter
 
         public void CreateUser()
         {
-            NewUserContext.Create();
+            NewUser.Create();
         }
 
         public void UpdateUser()
         {
-            NewUserContext.Update();
+            NewUser.Update();
         }
 
         public void DeleteUser()
         {
-            NewUserContext.Delete();
+            NewUser.Delete();
         }
 
-        private UserContext NewUserContext => new UserContext()
+        private ICUD NewUser =>new UserContext()
         {
             UserID = _user.UserID,
             Username = _user.Username,
