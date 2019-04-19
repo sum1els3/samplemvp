@@ -19,15 +19,9 @@ namespace SamplePersonCrud.Model.Database.DatabaseServices
         public string StoredProcedureName { get; set; }
         public List<Parameter> Parameters { get; set; }
 
-        public void ExecuteNonQuery()
-        {
-            CreateNewConnectionAndExecuteNonQuery();
-        }
+        public void ExecuteNonQuery() => CreateNewConnectionAndExecuteNonQuery();
 
-        public IDataReader ExecuteDataReader()
-        {
-            return CreateNewConnectionAndExecuteDataReader();
-        }
+        public IDataReader ExecuteDataReader() => CreateNewConnectionAndExecuteDataReader();
 
         private void CreateNewConnectionAndExecuteNonQuery()
         {
